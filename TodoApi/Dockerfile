@@ -1,19 +1,20 @@
-# שימוש בתמונה רשמית של .NET
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
-WORKDIR /app
-EXPOSE 5000
+# שלב הבסיס - השתמש בתמונה של Node.js
+FROM node:16
 
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /src
-COPY ["TodoApi.csproj", "./"]
-RUN dotnet restore "./TodoApi.csproj"
+# יצירת ספריית עבודה במיכל
+WORKDIR /usr/src/app
 
-COPY . .
-WORKDIR "/src/"
-RUN dotnet build -c Release -o /app/build
-RUN dotnet publish -c Release -o /app/publish
+# העתק את קבצי package.json ו-package-lock.json
+COPY package*.json ./
 
-FROM base AS final
-WORKDIR /app
-COPY --from=build /app/publish .
-ENTRYPOINT ["dotnet", "TodoApi.dll"]
+# התקן את כל התלויות
+RUN npm install
+
+# העתק את שאר הקבצים
+COPY . ./
+
+# פתח את הפורט 3000 (או כל פורט שאתה רוצה)
+EXPOSE 3000
+
+# הרץ את האפליקציה
+CMD ["npm", "start"]
