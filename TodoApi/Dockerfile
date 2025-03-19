@@ -1,20 +1,19 @@
-# השתמש בתמונה בסיסית של Node.js
-FROM node:16
+# שימוש בתמונה רשמית של .NET
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
+WORKDIR /app
+EXPOSE 5000
 
-# הגדרת תיקיית עבודה
-WORKDIR /usr/src/app
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
+WORKDIR /src
+COPY ["TodoApi.csproj", "./"]
+RUN dotnet restore "./TodoApi.csproj"
 
-# העתקת קבצים חשובים (כמו package.json)
-COPY package*.json ./
-
-# התקנת התלויות של הפרויקט
-RUN npm install
-
-# העתקת שאר הקבצים
 COPY . .
+WORKDIR "/src/"
+RUN dotnet build -c Release -o /app/build
+RUN dotnet publish -c Release -o /app/publish
 
-# הגדרת הפקודה שתפעיל את האפליקציה
-CMD ["npm", "start"]
-
-# חשיפת הפורט שהאפליקציה מאזינה אליו (נניח 3000)
-EXPOSE 3000
+FROM base AS final
+WORKDIR /app
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "TodoApi.dll"]
