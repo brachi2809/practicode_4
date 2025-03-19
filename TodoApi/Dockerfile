@@ -1,20 +1,20 @@
-# שלב הבסיס - השתמש בתמונה של Node.js
+# Use official Node.js image as base image
 FROM node:16
 
-# יצירת ספריית עבודה במיכל
+# Set the working directory in the container
 WORKDIR /usr/src/app
 
-# העתק את קבצי package.json ו-package-lock.json
+# Copy the package.json and package-lock.json
 COPY package*.json ./
 
-# התקן את כל התלויות
+# Install dependencies
 RUN npm install
 
-# העתק את שאר הקבצים
-COPY . ./
+# Copy the rest of the application code
+COPY . .
 
-# פתח את הפורט 3000 (או כל פורט שאתה רוצה)
+# Expose the port that the app runs on (change if necessary)
 EXPOSE 3000
 
-# הרץ את האפליקציה
+# Command to run the app
 CMD ["npm", "start"]
