@@ -1,20 +1,22 @@
-# שימוש ב-image רשמי של Node.js
-FROM node:18
-
-# יצירת תיקיית עבודה
+# שימוש ב-Image רשמי של .NET SDK לבניית האפליקציה
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-# העתקת קבצי התלויות
-COPY package.json package-lock.json ./
+# העתקת קבצי הפרויקט והתקנת התלויות
+COPY *.csproj ./
+RUN dotnet restore
 
-# התקנת התלויות
-RUN npm install
+# העתקת שאר הקבצים ובניית האפליקציה
+COPY . ./
+RUN dotnet publish -c Release -o out
 
-# העתקת שאר קבצי הפרויקט
-COPY . .
+# שימוש ב-Image קל משקל להרצת האפליקציה
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
+WORKDIR /app
+COPY --from=build /app/out ./
 
-# פתיחת פורט
-EXPOSE 3000
+# פתיחת פורט 80 (או הפורט שבו האפליקציה רצה)
+EXPOSE 80
 
-# פקודת ההפעלה
-CMD ["node", "server.js"]
+# הפקודה שמפעילה את האפליקציה
+ENTRYPOINT ["dotnet", "TodoApi.dll"]
