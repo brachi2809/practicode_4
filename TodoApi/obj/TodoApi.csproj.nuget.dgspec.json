@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\The user\\Desktop\\PractiCode\\Practicode3\\TodoApi\\TodoApi.csproj": {}
+    "C:\\Users\\user1\\Documents\\שנה ב\\פרקטיקוד\\practicode_3\\TodoApi\\TodoApi.csproj": {}
   },
   "projects": {
-    "C:\\Users\\The user\\Desktop\\PractiCode\\Practicode3\\TodoApi\\TodoApi.csproj": {
+    "C:\\Users\\user1\\Documents\\שנה ב\\פרקטיקוד\\practicode_3\\TodoApi\\TodoApi.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\The user\\Desktop\\PractiCode\\Practicode3\\TodoApi\\TodoApi.csproj",
+        "projectUniqueName": "C:\\Users\\user1\\Documents\\שנה ב\\פרקטיקוד\\practicode_3\\TodoApi\\TodoApi.csproj",
         "projectName": "TodoApi",
-        "projectPath": "C:\\Users\\The user\\Desktop\\PractiCode\\Practicode3\\TodoApi\\TodoApi.csproj",
-        "packagesPath": "C:\\Users\\The user\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\The user\\Desktop\\PractiCode\\Practicode3\\TodoApi\\obj\\",
+        "projectPath": "C:\\Users\\user1\\Documents\\שנה ב\\פרקטיקוד\\practicode_3\\TodoApi\\TodoApi.csproj",
+        "packagesPath": "C:\\Users\\user1\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\user1\\Documents\\שנה ב\\פרקטיקוד\\practicode_3\\TodoApi\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\The user\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\user1\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -26,7 +26,6 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -95,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.102/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
