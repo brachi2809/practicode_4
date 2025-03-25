@@ -27,18 +27,21 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<ToDoDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
+// הוספת Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 // הפעלת CORS
 app.UseCors("AllowAll");
 
-// 🔥 **Swagger לא יוצג כברירת מחדל!** 
-// אבל עדיין ניתן לגשת אליו דרך `/swagger`
+// הפעלת Swagger
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    options.RoutePrefix = "swagger";  // עכשיו הוא רק ב-`/swagger`
+    options.RoutePrefix = "swagger";  // רק אם ברצונך שהוא יישאר ב-`/swagger`
 });
 
 // ✅ **ברירת מחדל (`/`) מחזירה את כל הנתונים**
