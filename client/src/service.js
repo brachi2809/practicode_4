@@ -1,5 +1,7 @@
 import axios from 'axios';
-axios.defaults.baseURL = "http://localhost:5073";
+// axios.defaults.baseURL = "http://localhost:5073";
+axios.defaults.baseURL = "https://client-7stx.onrender.com/";
+
 
 axios.interceptors.response.use(
   response => response,
