@@ -3,13 +3,13 @@ axios.defaults.baseURL = "http://localhost:5073";
 // axios.defaults.baseURL = "https://client-7stx.onrender.com/";
 
 
-// axios.interceptors.response.use(
-//   response => response,
-//   error => {
-//     console.error("Error in API call:", error.response?.status, error.message);
-//     return Promise.reject(error);
-//   }
-// );
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    console.error("Error in API call:", error.response?.status, error.message);
+    return Promise.reject(error);
+  }
+);
 export default {
   getTasks: async () => {
     const result = await axios.get(`/items`)    
