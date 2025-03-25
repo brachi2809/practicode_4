@@ -42,7 +42,7 @@ app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    options.RoutePrefix = string.Empty;  // תציג את ה-Swagger בכתובת הראשית
+    options.RoutePrefix = "swagger";  // מציין את הנתיב ל-Swagger כ-"swagger"
 
     
 });
