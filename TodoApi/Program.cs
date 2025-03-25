@@ -95,5 +95,4 @@ app.MapDelete("/items/{id}", async (int id, ToDoDbContext db) =>
 
 // בדיקה אם השרת רץ
 app.MapGet("/", () => "Server is running!");
-Console.WriteLine("hhhhhooooo😁🖥️💐💲")
 app.Run(); 
