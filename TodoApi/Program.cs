@@ -3,7 +3,6 @@ using Microsoft.Extensions.Configuration;
 using TodoApi;
 using TodoApi.Models;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // טעינת קובץ appsettings.json
@@ -30,7 +29,7 @@ builder.Services.AddSwaggerGen();
 
 // חיבור למסד הנתונים
 builder.Services.AddDbContext<ToDoDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 var app = builder.Build();
 
@@ -38,15 +37,13 @@ var app = builder.Build();
 app.UseCors("AllowAll");
 
 // SWAGGER
-if (app.Environment.IsDevelopment())
+// במקרה של סביבה כלשהי (לא רק Development)
+app.UseSwagger();
+app.UseSwaggerUI(options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-        options.RoutePrefix = string.Empty;
-    });
-}
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    options.RoutePrefix = string.Empty;  // תציג את ה-Swagger בכתובת הראשית
+});
 
 // GET all items
 app.MapGet("/items", async (ToDoDbContext db) =>
