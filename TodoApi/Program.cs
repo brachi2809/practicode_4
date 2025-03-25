@@ -37,19 +37,25 @@ var app = builder.Build();
 app.UseCors("AllowAll");
 
 // SWAGGER
-// במקרה של סביבה כלשהי (לא רק Development)
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
-    // options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    // options.RoutePrefix = "swagger";  // מציין את הנתיב ל-Swagger כ-"swagger"
-app.UseSwaggerUI(options =>
-{
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    options.RoutePrefix = "";  // זה אומר ש-Swagger יהיה ישירות ב-"/"
+    options.RoutePrefix = "swagger";  // Swagger יהיה בנתיב /swagger
 });
 
-    
+// מסלול שמחזיר את כל הנתונים ב-JSON בכניסה ל-`/`
+app.MapGet("/", async (ToDoDbContext db) =>
+{
+    var items = await db.Items.ToListAsync();
+    return Results.Ok(items);
+});
+
+// מסלול נוסף, כדי שתוכלי לבדוק גם ב-`/all-data`
+app.MapGet("/all-data", async (ToDoDbContext db) =>
+{
+    var items = await db.Items.ToListAsync();
+    return Results.Ok(items);
 });
 
 // GET all items
@@ -100,11 +106,7 @@ app.MapDelete("/items/{id}", async (int id, ToDoDbContext db) =>
     return Results.Ok();
 });
 
-// בדיקה אם השרת רץ
-app.MapGet("/", async (ToDoDbContext db) =>
-{
-    var items = await db.Items.ToListAsync();
-    return Results.Ok(items);
-});
+// הודעה כדי לוודא שהשרת רץ
+Console.WriteLine("Server is running...");
 
 app.Run();
