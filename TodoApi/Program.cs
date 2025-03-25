@@ -5,14 +5,14 @@ using TodoApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// טעינת קובץ ההגדרות
+// טעינת קובץ appsettings.json
 builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
-// בדיקת מחרוזת החיבור למסד הנתונים
+// בדיקת מחרוזת החיבור
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-Console.WriteLine($"🛠️ Using Connection String: {connectionString}");
+Console.WriteLine($"Using Connection String: {connectionString}");
 
-// הוספת שירותי CORS
+// CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
@@ -23,79 +23,42 @@ builder.Services.AddCors(options =>
     });
 });
 
+// SWAGGER
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 // חיבור למסד הנתונים
 builder.Services.AddDbContext<ToDoDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-// הוספת Swagger
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
-// הפעלת CORS
+// CORS
 app.UseCors("AllowAll");
 
-// הפעלת Swagger
+// SWAGGER
+// במקרה של סביבה כלשהי (לא רק Development)
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    options.RoutePrefix = "swagger";  // רק אם ברצונך שהוא יישאר ב-`/swagger`
+    options.RoutePrefix = string.Empty;  // תציג את ה-Swagger בכתובת הראשית
 });
 
-// ✅ **ברירת מחדל (`/`) מחזירה את כל הנתונים**
-app.MapGet("/", async (ToDoDbContext db) =>
-{
-    try
-    {
-        var items = await db.Items.ToListAsync();
-        Console.WriteLine($"🔍 Found {items.Count} items in the database.");
-
-        if (items.Count == 0)
-        {
-            return Results.NotFound("⚠️ אין נתונים במסד!");
-        }
-
-        return Results.Ok(items);
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"❌ Database Error: {ex.Message}");
-        return Results.Problem("🚨 שגיאה בגישה למסד הנתונים!");
-    }
-});
-
-// **GET - קבלת כל הפריטים**
+// GET all items
 app.MapGet("/items", async (ToDoDbContext db) =>
 {
-    try
-    {
-        var items = await db.Items.ToListAsync();
-        Console.WriteLine($"🔍 Found {items.Count} items in the database.");
-
-        if (items.Count == 0)
-        {
-            return Results.NotFound("⚠️ אין נתונים במסד!");
-        }
-
-        return Results.Ok(items);
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"❌ Database Error: {ex.Message}");
-        return Results.Problem("🚨 שגיאה בגישה למסד הנתונים!");
-    }
+    return await db.Items.ToListAsync();
 });
 
-// **GET - קבלת פריט לפי מזהה**
+// GET item by ID
 app.MapGet("/items/{id}", async (int id, ToDoDbContext db) =>
 {
     var item = await db.Items.FindAsync(id);
     return item is not null ? Results.Ok(item) : Results.NotFound();
 });
 
-// **PUT - עדכון פריט לפי מזהה**
+// UPDATE (PUT) item
 app.MapPut("/items/{id}", async (int id, Item item, ToDoDbContext db) =>
 {
     var existingItem = await db.Items.FindAsync(id);
@@ -108,7 +71,7 @@ app.MapPut("/items/{id}", async (int id, Item item, ToDoDbContext db) =>
     return Results.Ok(existingItem);
 });
 
-// **POST - יצירת פריט חדש**
+// CREATE new item
 app.MapPost("/items", async (Item item, ToDoDbContext db) =>
 {
     var newItem = new Item { IsComplete = 0, Name = item.Name };
@@ -118,7 +81,7 @@ app.MapPost("/items", async (Item item, ToDoDbContext db) =>
     return Results.Created($"/items/{newItem.Id}", newItem);
 });
 
-// **DELETE - מחיקת פריט לפי מזהה**
+// DELETE item
 app.MapDelete("/items/{id}", async (int id, ToDoDbContext db) =>
 {
     var item = await db.Items.FindAsync(id);
@@ -130,4 +93,7 @@ app.MapDelete("/items/{id}", async (int id, ToDoDbContext db) =>
     return Results.Ok();
 });
 
-app.Run();
+// בדיקה אם השרת רץ
+app.MapGet("/", () => "Server is running!");
+
+app.Run(); 
