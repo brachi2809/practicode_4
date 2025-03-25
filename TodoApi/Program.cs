@@ -41,8 +41,13 @@ app.UseCors("AllowAll");
 app.UseSwagger();
 app.UseSwaggerUI(options =>
 {
+    // options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+    // options.RoutePrefix = "swagger";  // מציין את הנתיב ל-Swagger כ-"swagger"
+app.UseSwaggerUI(options =>
+{
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-    options.RoutePrefix = "swagger";  // מציין את הנתיב ל-Swagger כ-"swagger"
+    options.RoutePrefix = "";  // זה אומר ש-Swagger יהיה ישירות ב-"/"
+});
 
     
 });
