@@ -16,7 +16,7 @@ export default {
 
   addTask: async(name)=>{
     console.log('addTask', name);
-    const result = await axios.put(`/items`, {name: name});
+    const result = await axios.post(`/items`, {name: name});
     console.log("add");
     
     console.log("add result.data :",result.data);
