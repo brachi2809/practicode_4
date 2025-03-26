@@ -318,9 +318,9 @@ app.MapPut("/items/{id}", async (int id, Item item, ToDoDbContext db) =>
 });
 
 // CREATE new item
-app.MapPost("/items", async (Item item, ToDoDbContext db) =>
+app.MapPost("/items", async (Item name, ToDoDbContext db) =>
 {
-    var newItem = new Item { IsComplete = 0, Name = item.Name };
+    var newItem = new Item { IsComplete = 0, name = item.Name };
     db.Items.Add(newItem);
     await db.SaveChangesAsync();
 
