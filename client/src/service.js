@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/items'; // יש להחליף בכתובת של ה-API שלך
+const API_URL = 'https://server-dyzm.onrender.com';
 
 const service = {
   // Get all tasks
