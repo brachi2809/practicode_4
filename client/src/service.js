@@ -1,6 +1,6 @@
 import axios from 'axios';
 // axios.defaults.baseURL = "http://localhost:5073";
-axios.defaults.baseURL = "https://server-dyzm.onrender.com/items";
+axios.defaults.baseURL = "https://server-dyzm.onrender.com";
 
 
 
