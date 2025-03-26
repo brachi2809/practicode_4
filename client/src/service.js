@@ -1,73 +1,34 @@
-const API_URL = 'https://server-dyzm.onrender.com';
 
-const service = {
-  // Get all tasks
-  async getTasks() {
-    const response = await fetch(API_URL);
-    if (response.ok) {
-      const todos = await response.json();
-      return todos;
-    } else {
-      console.error("Failed to fetch tasks");
-      return [];
-    }
+
+import axios from 'axios';
+axios.defaults.baseURL = "https://server-dyzm.onrender.com";
+
+axios.interceptors.response.use(
+  response => response,
+  error => {
+    console.error("Error in API call:", error.response?.status, error.message);
+    return Promise.reject(error);
+  }
+);
+
+export default {
+  getTasks: async () => {
+    const result = await axios.get('/items');
+    return result.data;
   },
 
-  // Create a new task
-  async addTask(name) {
-    const response = await fetch(API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name: name, isComplete: 0 })
-    });
-
-    if (!response.ok) {
-      console.error("Failed to create task");
-    }
+  addTask: async (name) => {
+    const result = await axios.post('/items', { name });
+    return result.data;
   },
 
-  // Update task completion status
-  async setCompleted(id, isComplete) {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ isComplete: isComplete })
-    });
-
-    if (!response.ok) {
-      console.error("Failed to update task completion status");
-    }
+  setCompleted: async (id, isComplete) => {
+    const result = await axios.put(`/items/${id}`, { isComplete });  // עדכון רק סטטוס
+    return result.data; // מחזיר את המשימה המעודכנת
   },
 
-  // Update task name
-  async updateTaskName(id, name) {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ name: name })
-    });
-
-    if (!response.ok) {
-      console.error("Failed to update task name");
-    }
-  },
-
-  // Delete a task
-  async deleteTask(id) {
-    const response = await fetch(`${API_URL}/${id}`, {
-      method: 'DELETE',
-    });
-
-    if (!response.ok) {
-      console.error("Failed to delete task");
-    }
+  deleteTask: async (id) => {
+    const result = await axios.delete(`/items/${id}`);
+    return result.data;
   }
 };
-
-export default service;
