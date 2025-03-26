@@ -68,41 +68,53 @@ app.MapGet("/items/{id}", async (int id, ToDoDbContext db) =>
 });
 
 // UPDATE (PUT) item
-app.MapPut("/items/{id}", async (int id, Item item, ToDoDbContext db) =>
-{
-    var existingItem = await db.Items.FindAsync(id);
-    if (existingItem is null) return Results.NotFound();
+// app.MapPut("/items/{id}", async (int id, Item item, ToDoDbContext db) =>
+// {
+//     var existingItem = await db.Items.FindAsync(id);
+//     if (existingItem is null) return Results.NotFound();
 
-    // ודא ששם המשימה מועבר כראוי, ושמור אותו
-    if (!string.IsNullOrEmpty(item.Name))
-    {
-        existingItem.Name = item.Name;
-    }
+//     // ודא ששם המשימה מועבר כראוי, ושמור אותו
+//     if (!string.IsNullOrEmpty(item.Name))
+//     {
+//         existingItem.Name = item.Name;
+//     }
 
-    existingItem.IsComplete = item.IsComplete;
+//     existingItem.IsComplete = item.IsComplete;
 
-    try
-    {
-        await db.SaveChangesAsync();
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error updating item: {ex.Message}");
-        return Results.Problem("Internal Server Error");
-    }
+//     try
+//     {
+//         await db.SaveChangesAsync();
+//     }
+//     catch (Exception ex)
+//     {
+//         Console.WriteLine($"Error updating item: {ex.Message}");
+//         return Results.Problem("Internal Server Error");
+//     }
 
-    return Results.Ok(existingItem);
-});
+//     return Results.Ok(existingItem);
+// });
 
-// CREATE new item
-app.MapPost("/items", async (Item item, ToDoDbContext db) =>
-{
-    var newItem = new Item { IsComplete = 0, Name = item.Name };
-    db.Items.Add(newItem);
-    await db.SaveChangesAsync();
+// // CREATE new item
+// app.MapPost("/items", async (Item item, ToDoDbContext db) =>
+// {
+//     var newItem = new Item { IsComplete = 0, Name = item.Name };
+//     db.Items.Add(newItem);
+//     await db.SaveChangesAsync();
 
-    return Results.Created($"/items/{newItem.Id}", newItem);
-});
+//     return Results.Created($"/items/{newItem.Id}", newItem);
+// });
+
+setCompleted: async (id, isComplete, name) => {
+  try {
+    const taskData = { name, isComplete }; 
+    const data = await axios.put(`/items/${id}`, taskData);  
+    return data.data; 
+  } catch (error) {
+    console.error("Error updating task:", error.response ? error.response.data : error);
+    throw error;
+  }
+},
+
 
 // DELETE item
 app.MapDelete("/items/{id}", async (int id, ToDoDbContext db) =>
