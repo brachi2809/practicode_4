@@ -30,8 +30,8 @@ export default {
   setCompleted: async(id, isComplete)=>{
     console.log('setCompleted', {id, isComplete})
     isComplete === true ? isComplete = 1 : isComplete = 0;
-    // const result = await axios.put(`/items/${id}`, {  isComplete });
-    const result = await axios.put(`/items/${id}`, { name: todo.name, isComplete });
+    const result = await axios.put(`/items/${id}`, {  isComplete });
+    // const result = await axios.put(`/items/${id}`, { name: todo.name, isComplete });
     console.log("set result.data :",result.data);
     return result.data;
   },
