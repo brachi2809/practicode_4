@@ -46,9 +46,24 @@ app.UseSwaggerUI(options =>
 });
 
 // GET all items
+
+// app.MapGet("/items", async (ToDoDbContext db) =>
+// {
+//     return await db.Items.ToListAsync();
+// });
+
 app.MapGet("/items", async (ToDoDbContext db) =>
 {
-    return await db.Items.ToListAsync();
+    try
+    {
+        var items = await db.Items.ToListAsync();
+        return Results.Ok(items);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Error fetching items: {ex.Message}");
+        return Results.Problem("Internal Server Error");
+    }
 });
 
 // GET item by ID
