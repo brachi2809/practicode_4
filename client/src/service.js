@@ -26,12 +26,21 @@ export default {
   //   const result = await axios.put(`/items/${id}`, { isComplete });  // עדכון רק סטטוס
   //   return result.data; // מחזיר את המשימה המעודכנת
   // },
-  
+
   setCompleted: async (id, isComplete, name) => {
-    const taskData = { Name: name, IsComplete: isComplete }; // ודא שאתה שולח את שם המשימה ואת הסטטוס
-    const result = await axios.put(`/items/${id}`, taskData);
-    return result.data;
-  },
+    try {
+      const taskData = { Name: name, IsComplete: isComplete };
+      const result = await axios.put(`/items/${id}`, taskData);
+  
+      console.log("Response from API:", result.data); // הדפסת התשובה לבדיקה
+  
+      return result.data; 
+    } catch (error) {
+      console.error("Error updating task:", error.response ? error.response.data : error);
+      throw error; // נזרוק את השגיאה כדי שהפונקציה הקוראת תוכל לטפל בה
+    }
+  }
+  
   
   
 
