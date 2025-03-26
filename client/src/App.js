@@ -17,16 +17,29 @@ function App() {
     await getTodos(); // refresh tasks list (in order to see the new one)
   }
 
+  // async function updateCompleted(todo, isComplete) {
+  //   try {
+  //     await service.setCompleted(todo.id, isComplete, todo.name); // גם השם
+  //     await getTodos(); // רענון רשימת המשימות
+  //   } catch (error) {
+  //     console.error("Error updating task:", error);
+  //   }
+  // }
+  
   async function updateCompleted(todo, isComplete) {
     try {
-      await service.setCompleted(todo.id, isComplete, todo.name); // גם השם
-      await getTodos(); // רענון רשימת המשימות
+      const response = await service.setCompleted(todo.id, isComplete, todo.name);
+      
+      if (response && response.success) { // נבדוק שהתשובה תקינה
+        await getTodos(); // רענון רשימת המשימות
+      } else {
+        console.error("Failed to update task:", response);
+      }
     } catch (error) {
       console.error("Error updating task:", error);
     }
   }
   
-
   async function deleteTodo(id) {
     await service.deleteTask(id);
     await getTodos(); // refresh tasks list
