@@ -83,8 +83,11 @@ function App() {
 
   // פונקציה לעדכון סטטוס של משימה (הושלמה או לא)
   async function updateCompleted(todo, isComplete) {
-    await service.setCompleted(todo.id, isComplete);
-    await getTodos();  // טוען מחדש את המשימות
+    // עדכון הסטטוס של המשימה (הושלמה או לא)
+    const updatedTodo = await service.setCompleted(todo.id, isComplete);
+    
+    // עדכון המידע של המשימה ברשימה לאחר עדכון הסטטוס
+    setTodos(todos.map(t => t.id === updatedTodo.id ? updatedTodo : t));
   }
 
   // פונקציה למחיקת משימה
@@ -113,7 +116,7 @@ function App() {
       <section className="main" style={{ display: "block" }}>
         <ul className="todo-list">
           {todos.map(todo => (
-            <li className={todo.isComplete ? "completed" : ""} key={todo.id}>
+            <li className={todo.isComplete === 1 ? "completed" : ""} key={todo.id}>
               <div className="view">
                 <input
                   className="toggle"
