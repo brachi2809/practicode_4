@@ -27,10 +27,10 @@ export default {
     return result.data;
   },
 
-  setCompleted: async(id, isComplete)=>{
+  setCompleted: async(id,item, isComplete)=>{
     console.log('setCompleted', {id, isComplete})
     isComplete === true ? isComplete = 1 : isComplete = 0;
-    const result = await axios.put(`/items/${id}`, {  isComplete });
+    const result = await axios.put(`/items/${id}`,{item}, {  isComplete });
     console.log("set result.data :",result.data);
     return result.data;
   },
