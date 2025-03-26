@@ -22,10 +22,16 @@ export default {
     return result.data;
   },
 
+  // setCompleted: async (id, isComplete) => {
+  //   const result = await axios.put(`/items/${id}`, { isComplete });  // עדכון רק סטטוס
+  //   return result.data; // מחזיר את המשימה המעודכנת
+  // },
   setCompleted: async (id, isComplete) => {
-    const result = await axios.put(`/items/${id}`, { isComplete });  // עדכון רק סטטוס
-    return result.data; // מחזיר את המשימה המעודכנת
-  },
+    const taskData = { id, isComplete }; // ודא שאתה שולח את כל הנתונים הדרושים
+    const result = await axios.put(`/items/${id}`, taskData);
+    return result.data;
+  }
+,  
 
   deleteTask: async (id) => {
     const result = await axios.delete(`/items/${id}`);
