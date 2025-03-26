@@ -67,31 +67,49 @@ app.MapGet("/items/{id}", async (int id, ToDoDbContext db) =>
     return item is not null ? Results.Ok(item) : Results.NotFound();
 });
 
-UPDATE (PUT) item
+// UPDATE (PUT) item
+// app.MapPut("/items/{id}", async (int id, Item item, ToDoDbContext db) =>
+// {
+//     var existingItem = await db.Items.FindAsync(id);
+//     if (existingItem is null) return Results.NotFound();
+
+//     // ודא ששם המשימה מועבר כראוי, ושמור אותו
+//     if (!string.IsNullOrEmpty(item.Name))
+//     {
+//         existingItem.Name = item.Name;
+//     }
+
+//     existingItem.IsComplete = item.IsComplete;
+
+//     try
+//     {
+//         await db.SaveChangesAsync();
+//     }
+//     catch (Exception ex)
+//     {
+//         Console.WriteLine($"Error updating item: {ex.Message}");
+//         return Results.Problem("Internal Server Error");
+//     }
+
+//     return Results.Ok(existingItem);
+// });
+
 app.MapPut("/items/{id}", async (int id, Item item, ToDoDbContext db) =>
 {
     var existingItem = await db.Items.FindAsync(id);
-    if (existingItem is null) return Results.NotFound();
+    // if (existingItem is null) return Results.NotFound();
 
-    // ודא ששם המשימה מועבר כראוי, ושמור אותו
     if (!string.IsNullOrEmpty(item.Name))
     {
         existingItem.Name = item.Name;
     }
 
     existingItem.IsComplete = item.IsComplete;
+    Item.Name=Item.Name;
 
-    try
-    {
-        await db.SaveChangesAsync();
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine($"Error updating item: {ex.Message}");
-        return Results.Problem("Internal Server Error");
-    }
-
-    return Results.Ok(existingItem);
+   
+     await db.SaveChangesAsync();
+    return Results.Ok(existingItem,Name);
 });
 
 // CREATE new item
@@ -103,9 +121,6 @@ app.MapPost("/items", async (Item item, ToDoDbContext db) =>
 
     return Results.Created($"/items/{newItem.Id}", newItem);
 });
-
-
-
 
 // DELETE item
 app.MapDelete("/items/{id}", async (int id, ToDoDbContext db) =>
