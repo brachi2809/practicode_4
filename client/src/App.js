@@ -64,10 +64,10 @@ import React, { useEffect, useState } from 'react';
 import service from './service.js';
 
 function App() {
-  const [newTodo, setNewTodo] = useState("");  // מצב של הכניסות מהמשתמש
-  const [todos, setTodos] = useState([]);      // רשימת המשימות
+  const [newTodo, setNewTodo] = useState("");
+  const [todos, setTodos] = useState([]);
 
-  // פונקציה שמביאה את כל המשימות
+  // פונקציה לקבלת כל המשימות
   async function getTodos() {
     const todos = await service.getTasks();
     setTodos(todos);
@@ -75,16 +75,16 @@ function App() {
 
   // פונקציה ליצירת משימה חדשה
   async function createTodo(e) {
-    e.preventDefault();  // מונע את שליחת הטופס
+    e.preventDefault();
     await service.addTask(newTodo);
-    setNewTodo("");      // מאפס את הקלט
-    await getTodos();    // טוען מחדש את המשימות כדי להציג את החדשה
+    setNewTodo("");  // מאפס את הקלט
+    await getTodos();  // טוען מחדש את המשימות
   }
 
-  // פונקציה לעדכון סטטוס של משימה (הושלמה או לא)
+  // פונקציה לעדכון סטטוס המשימה
   async function updateCompleted(todo, isComplete) {
-    const updatedTodo = await service.setCompleted(todo.id, isComplete);  // מעדכן את הסטטוס של המשימה
-    // עדכון המידע של המשימה ברשימה לאחר עדכון הסטטוס
+    const updatedTodo = await service.setCompleted(todo.id, isComplete);
+    // עדכון רק את המשימה שהסטטוס שלה שונה
     setTodos(todos.map(t => t.id === updatedTodo.id ? updatedTodo : t));
   }
 
@@ -94,8 +94,9 @@ function App() {
     await getTodos();  // טוען מחדש את המשימות
   }
 
+  // קריאה ל-getTodos בהפעלת הקומפוננטה
   useEffect(() => {
-    getTodos();  // מקבל את כל המשימות עם העלאת האפליקציה
+    getTodos();
   }, []);
 
   return (
@@ -107,7 +108,7 @@ function App() {
             className="new-todo"
             placeholder="Well, let's take on the day"
             value={newTodo}
-            onChange={(e) => setNewTodo(e.target.value)}  // עדכון ערך ה-input
+            onChange={(e) => setNewTodo(e.target.value)}
           />
         </form>
       </header>
@@ -119,7 +120,7 @@ function App() {
                 <input
                   className="toggle"
                   type="checkbox"
-                  checked={todo.isComplete === 1}  // תיקון להתאמת הסטטוס של ה-checkbox
+                  checked={todo.isComplete === 1}
                   onChange={(e) => updateCompleted(todo, e.target.checked)}
                 />
                 <label>{todo.name}</label>  {/* שם המשימה */}
