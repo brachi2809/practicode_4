@@ -29,15 +29,14 @@ export default {
 
   setCompleted: async (id, isComplete, name) => {
     try {
-      const taskData = { Name: name, IsComplete: isComplete };
+      const taskData = { name, isComplete }; 
       const data = await axios.put(`/items/${id}`, taskData);  
       return data.data; 
     } catch (error) {
       console.error("Error updating task:", error.response ? error.response.data : error);
-      throw error; // נזרוק את השגיאה כדי שהפונקציה הקוראת תוכל לטפל בה
+      throw error;
     }
   },
-  
   
   
 
