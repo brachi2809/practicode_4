@@ -72,10 +72,10 @@ export default {
   },
 
   // עדכון סטטוס המשימה (הושלמה או לא)
-  setCompleted: async (id, isComplete) => {
+  setCompleted: async (id,Name, isComplete) => {
     console.log('setCompleted', { id, isComplete });
     isComplete = isComplete === true ? 1 : 0;  // מבצע שינוי רק אם נדרש
-    const result = await axios.put(`/items/${id}`, { isComplete });
+    const result = await axios.put(`/items/${id}`,{Name}, { isComplete });
     console.log("set result.data:", result.data);
     return result.data;
   },

@@ -83,9 +83,7 @@ function App() {
 
   // פונקציה לעדכון סטטוס של משימה (הושלמה או לא)
   async function updateCompleted(todo, isComplete) {
-    // עדכון הסטטוס של המשימה (הושלמה או לא)
-    const updatedTodo = await service.setCompleted(todo.id, isComplete);
-    
+    const updatedTodo = await service.setCompleted(todo.id, isComplete);  // מעדכן את הסטטוס של המשימה
     // עדכון המידע של המשימה ברשימה לאחר עדכון הסטטוס
     setTodos(todos.map(t => t.id === updatedTodo.id ? updatedTodo : t));
   }
@@ -124,7 +122,7 @@ function App() {
                   checked={todo.isComplete === 1}  // תיקון להתאמת הסטטוס של ה-checkbox
                   onChange={(e) => updateCompleted(todo, e.target.checked)}
                 />
-                <label>{todo.name}</label>
+                <label>{todo.name}</label>  {/* שם המשימה */}
                 <button className="destroy" onClick={() => deleteTodo(todo.id)}></button>
               </div>
             </li>
